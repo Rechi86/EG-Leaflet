@@ -51,6 +51,7 @@
     <!-- Datensätze -->
     <script src="data/standorte.js"></script>
     <script src="data/gpximport_1.js"></script>
+    <script src="data/geojson.js"></script>
     <script>
         // Company Server Daten
         var CS = {
@@ -60,7 +61,8 @@
             "mapOptions": {
                 zoomControl: true,
                 maxZoom: 28,
-                minZoom: 1
+                minZoom: 1,
+                center: L.latLng(47.95894548305854, 14.776692646076338)
             },
 
             // geoJSON-Layer1: Kleine Standorte mit Tooltip
@@ -194,9 +196,51 @@
                     shadowAnchor: [4, 62], // the same for the shadow
                     popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
                 }
-            }
+            },
 
-        };
+            //  geoJSON-Layer3: Themenweg
+            //  ------------------------------------------------------------------------------------
+            "geoJSON3Name": "GeoJson-Test",
+
+            "geoJSON3Style": function(feature) {
+                switch (feature.properties.party) {
+                    case 'Republican':
+                        return {
+                            color: "#ff0000"
+                        };
+                    case 'Democrat':
+                        return {
+                            color: "#0000ff"
+                        };
+                }
+            },
+
+            "geoJSON3PointToLayer": function(feature, latlng) {
+                return L.circleMarker(latlng);
+            },
+
+            "geoJSON3OnEachFeature": function standorteOnEachFeature(feature, standorte) {
+                standorte.bindTooltip(feature.properties.name.toString(), {
+                    noHide: true,
+                    permanent: true,
+                    interactive: true,
+                    className: 'custom-tooltip',
+                    direction: 'top'
+                });
+                tooltip = standorte.getTooltip();
+                standorte.on('click', function(event) {
+                    if (feature.properties.stateId) {
+                        console.log(feature.properties.stateId);
+                        var message = {
+                            'action': 'state-change',
+                            'state': feature.properties.stateId
+                        };
+
+                        window.parent.postMessage(message, "*");
+                    }
+                });
+            }
+        }
 
 
         //  Map Initialisierung mit Options
@@ -289,6 +333,20 @@
 
         map.addLayer(weg);
 
+        // geoJson-Layer: 3 Punkte im Zentrum
+        // ------------------------------------------------------------------------------------
+
+        var geoJsonLayer = new L.geoJson(standorte2, {
+            style: CS.geoJSON3Style,
+            pointToLayer: CS.geoJSON3PointToLayer,
+            onEachFeature: CS.geoJSON3OnEachFeature
+        });
+
+        //weg.bindPopup(CS.geoJSON2Popup, CS.geoJSON2PopupOptions);
+        //weg.bindTooltip(CS.geoJSON2Tooltip, CS.geoJSON2TooltipOptions);
+
+        map.addLayer(geoJsonLayer);
+
 
         // Open Streetsmap: Online Map
         // ------------------------------------------------------------------------------------
@@ -306,7 +364,8 @@
         var overlayMaps = {
             [CS.geoJSON2Name]: weg,
             [CS.locationsName]: markerLayer,
-            [CS.geojSONName]: standorte
+            [CS.geojSONName]: standorte,
+            [CS.geoJSON3Name]: geoJsonLayer
         };
 
         // Plugin: Benutzerposition

@@ -64,65 +64,7 @@
                 center: L.latLng(47.95894548305854, 14.776692646076338)
             },
 
-            // geoJSON-Layer1: Kleine Standorte mit Tooltip
-            //  ------------------------------------------------------------------------------------
-            "geojSONName": "Standorte Klein",
 
-            "geoJSONStyles": {
-                radius: 10,
-                fillColor: "#3c9bad",
-                color: "white",
-                weight: 1,
-                opacity: 1,
-                fillOpacity: 0.8
-            },
-
-            "geoJSONTooltipOptions": {
-                noHide: true,
-                permanent: true,
-                interactive: true,
-                className: 'customTooltip',
-                direction: 'top'
-            },
-
-            // Standorte-Layer: Große Marker mit Tooltip
-            //  ------------------------------------------------------------------------------------
-            "locationsName": "Standorte Groß",
-
-            "locations": [
-                [47.961046, 14.774788],
-                [47.971046, 14.774788]
-            ],
-
-            "locationMarkerOptions": {
-                //iconUrl: 'markers/marker.svg',
-                iconUrl: "data:image/svg+xml;base64," + window.btoa(
-                    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80"><defs><style>.cls-1{isolation:isolate;}.cls-2{fill:#3c9bad;}.cls-3{fill:#fff;}.cls-4{mix-blend-mode:multiply;}</style></defs><g class="cls-1"><g id="Ebene_1" data-name="Ebene 1"><polygon class="cls-2" points="40 73.65 49.96 38.11 30.04 38.11 40 73.65"/><circle class="cls-2" cx="40" cy="28.88" r="20.88"/><circle class="cls-3" cx="40" cy="28.88" r="12.21"/></g></g></svg>'
-                ),
-
-
-                iconSize: [100, 100], // size of the icon
-                shadowSize: [50, 64], // size of the shadow
-                iconAnchor: [50, 75], // point of the icon which will correspond to marker's location
-                shadowAnchor: [4, 62], // the same for the shadow
-                popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
-            },
-
-            "locationMarkerTooltip": "<img src='images/testbild.jpg' width='100'/><p>Tooltip</p>",
-
-            "locationMarkerTooltipOptions": {
-                direction: 'center',
-                permanent: false,
-                interactive: true,
-                noWrap: false,
-                opacity: 1,
-                offset: L.point(-100, 80),
-                className: "customTooltip"
-            },
-
-            "locationMarkerPopup": "<h1>Popup-Inhalt</h1><img src='images/testbild.jpg' width='200'/>",
-
-            "locationMarkerPopupOptions": "",
 
             // Bild-Layer: Offline Kartenausschnitt
             //  ------------------------------------------------------------------------------------
@@ -134,51 +76,8 @@
                 [47.941233249999996, 14.75356035306917],
                 [47.978900763, 14.80427590393084]
             ],
+        };
 
-
-            //  geoJSON-Layer3: Themenweg
-            //  ------------------------------------------------------------------------------------
-            "geoJSON3Name": "GeoJson-Test",
-
-            "geoJSON3Style": function(feature) {
-                switch (feature.properties.party) {
-                    case 'Republican':
-                        return {
-                            color: "#ff0000"
-                        };
-                    case 'Democrat':
-                        return {
-                            color: "#0000ff"
-                        };
-                }
-            },
-
-            "geoJSON3PointToLayer": function(feature, latlng) {
-                return L.circleMarker(latlng);
-            },
-
-            "geoJSON3OnEachFeature": function standorteOnEachFeature(feature, standorte) {
-                standorte.bindTooltip(feature.properties.name.toString(), {
-                    noHide: true,
-                    permanent: true,
-                    interactive: true,
-                    className: 'custom-tooltip',
-                    direction: 'top'
-                });
-                tooltip = standorte.getTooltip();
-                standorte.on('click', function(event) {
-                    if (feature.properties.stateId) {
-                        console.log(feature.properties.stateId);
-                        var message = {
-                            'action': 'state-change',
-                            'state': feature.properties.stateId
-                        };
-
-                        window.parent.postMessage(message, "*");
-                    }
-                });
-            }
-        }
 
         // SpecialPlaces: Punkte mit Info-Overlay und Icons je Kategorie
         //  ------------------------------------------------------------
@@ -236,7 +135,7 @@
             //customMarker.bindTooltip(CS.locationMarkerTooltip, CS.locationMarkerTooltipOptions).openTooltip();
             customMarker.bindPopup(element.popup, element.popupOptions);
             specialLocationsLayer.addLayer(customMarker);
-        })
+        });
 
         specialLocationsLayer.addTo(map);
 
@@ -249,31 +148,6 @@
         map.addLayer(imageOverlay);
 
 
-        // Weg-Layer: gpx-export to geoJson
-        // ------------------------------------------------------------------------------------
-
-        var weg = new L.geoJson(json_gpximport_1, {
-            style: CS.geoJSON2Styles
-        });
-
-        weg.bindPopup(CS.geoJSON2Popup, CS.geoJSON2PopupOptions);
-        weg.bindTooltip(CS.geoJSON2Tooltip, CS.geoJSON2TooltipOptions);
-
-        map.addLayer(weg);
-
-        // geoJson-Layer: 3 Punkte im Zentrum
-        // ------------------------------------------------------------------------------------
-
-        var geoJsonLayer = new L.geoJson(standorte2, {
-            style: CS.geoJSON3Style,
-            pointToLayer: CS.geoJSON3PointToLayer,
-            onEachFeature: CS.geoJSON3OnEachFeature
-        });
-
-        //weg.bindPopup(CS.geoJSON2Popup, CS.geoJSON2PopupOptions);
-        //weg.bindTooltip(CS.geoJSON2Tooltip, CS.geoJSON2TooltipOptions);
-
-        map.addLayer(geoJsonLayer);
 
 
         // Open Streetsmap: Online Map
@@ -290,9 +164,7 @@
         };
 
         var overlayMaps = {
-            [CS.geoJSON2Name]: weg,
             "Special Locations": specialLocationsLayer,
-            [CS.geoJSON3Name]: geoJsonLayer
         };
 
         // Plugin: Benutzerposition

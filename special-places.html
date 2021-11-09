@@ -49,7 +49,6 @@
 
 
     <!-- Datensätze -->
-    <script src="data/standorte.js"></script>
     <script src="data/gpximport_1.js"></script>
     <script src="data/geojson.js"></script>
     <script>
@@ -125,10 +124,6 @@
 
             "locationMarkerPopupOptions": "",
 
-
-
-
-
             // Bild-Layer: Offline Kartenausschnitt
             //  ------------------------------------------------------------------------------------
             "imageOverlayName": "Offline-Karte",
@@ -140,67 +135,6 @@
                 [47.978900763, 14.80427590393084]
             ],
 
-            // geoJSON-Layer2: Themenweg
-            //  ------------------------------------------------------------------------------------
-            "geoJSON2Name": "Themenweg",
-
-            "geoJSON2Styles": {
-                "color": "#3c9bad",
-                "weight": 8,
-                "opacity": 0.85,
-                "fill": true,
-                "fillColor": "#3c9bad",
-                "fillOpacity": 0.3
-            },
-
-            "geoJSON2Tooltip": "Themenweg Tooltip",
-
-            "geoJSON2TooltipOptions": {
-                noHide: true,
-                permanent: true,
-                interactive: true,
-                className: 'customTooltip',
-                direction: 'top'
-            },
-
-            "geoJSON2Popup": "Themenweg Popup",
-
-            "geoJSON2PopupOptions": "",
-
-            "locationMarkerOptionsDefault": {
-                "marker1": {
-                    //iconUrl: 'markers/marker.svg',
-                    SVG: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80"><defs><style>.cls-1{isolation:isolate;}.cls-2{fill:#3c9bad;}.cls-3{fill:#fff;}.cls-4{mix-blend-mode:multiply;}</style></defs><g class="cls-1"><g id="Ebene_1" data-name="Ebene 1"><polygon class="cls-2" points="40 73.65 49.96 38.11 30.04 38.11 40 73.65"/><circle class="cls-2" cx="40" cy="28.88" r="20.88"/><circle class="cls-3" cx="40" cy="28.88" r="12.21"/></g></g></svg>',
-
-                    iconSize: [100, 100], // size of the icon
-                    shadowSize: [50, 64], // size of the shadow
-                    iconAnchor: [50, 75], // point of the icon which will correspond to marker's location
-                    shadowAnchor: [4, 62], // the same for the shadow
-                    popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
-                },
-
-                "marker2": {
-                    //iconUrl: 'markers/marker.svg',
-                    SVG: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80"><defs><style>.cls-1{isolation:isolate;}.cls-2{fill:#3c9bad;}.cls-3{fill:#fff;}.cls-4{mix-blend-mode:multiply;}</style></defs><g class="cls-1"><g id="Ebene_1" data-name="Ebene 1"><polygon class="cls-2" points="40 73.65 49.96 38.11 30.04 38.11 40 73.65"/><circle class="cls-2" cx="40" cy="28.88" r="20.88"/><circle class="cls-3" cx="40" cy="28.88" r="12.21"/></g></g></svg>',
-
-                    iconSize: [100, 100], // size of the icon
-                    shadowSize: [50, 64], // size of the shadow
-                    iconAnchor: [50, 75], // point of the icon which will correspond to marker's location
-                    shadowAnchor: [4, 62], // the same for the shadow
-                    popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
-                },
-
-                "marker3": {
-                    //iconUrl: 'markers/marker.svg',
-                    SVG: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80"><defs><style>.cls-1{isolation:isolate;}.cls-2{fill:#3c9bad;}.cls-3{fill:#fff;}.cls-4{mix-blend-mode:multiply;}</style></defs><g class="cls-1"><g id="Ebene_1" data-name="Ebene 1"><polygon class="cls-2" points="40 73.65 49.96 38.11 30.04 38.11 40 73.65"/><circle class="cls-2" cx="40" cy="28.88" r="20.88"/><circle class="cls-3" cx="40" cy="28.88" r="12.21"/></g></g></svg>',
-
-                    iconSize: [100, 100], // size of the icon
-                    shadowSize: [50, 64], // size of the shadow
-                    iconAnchor: [50, 75], // point of the icon which will correspond to marker's location
-                    shadowAnchor: [4, 62], // the same for the shadow
-                    popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
-                }
-            },
 
             //  geoJSON-Layer3: Themenweg
             //  ------------------------------------------------------------------------------------
@@ -246,6 +180,37 @@
             }
         }
 
+        // SpecialPlaces: Punkte mit Info-Overlay und Icons je Kategorie
+        //  ------------------------------------------------------------
+
+        var specialLocations = [{
+            location: [47.961046, 14.774788],
+            markerOptions: {
+                iconUrl: "data:image/svg+xml;base64," + window.btoa(
+                    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80"><defs><style>.cls-1{isolation:isolate;}.cls-2{fill:#3c9bad;}.cls-3{fill:#fff;}.cls-4{mix-blend-mode:multiply;}</style></defs><g class="cls-1"><g id="Ebene_1" data-name="Ebene 1"><polygon class="cls-2" points="40 73.65 49.96 38.11 30.04 38.11 40 73.65"/><circle class="cls-2" cx="40" cy="28.88" r="20.88"/><circle class="cls-3" cx="40" cy="28.88" r="12.21"/></g></g></svg>'),
+                iconSize: [100, 100], // size of the icon
+                shadowSize: [50, 64], // size of the shadow
+                iconAnchor: [50, 75], // point of the icon which will correspond to marker's location
+                shadowAnchor: [4, 62], // the same for the shadow
+                popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+            },
+            popup: "<h1>Erster Marker</h1><img src='images/testbild.jpg' width='200'/>",
+            popupOptions: "",
+        }, {
+            location: [47.96273699537764, 14.771472348820074],
+            markerOptions: {
+                iconUrl: "data:image/svg+xml;base64," + window.btoa(
+                    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80"><defs><style>.cls-1{isolation:isolate;}.cls-2{fill:#3c9bad;}.cls-3{fill:#fff;}.cls-4{mix-blend-mode:multiply;}</style></defs><g class="cls-1"><g id="Ebene_1" data-name="Ebene 1"><polygon class="cls-2" points="40 73.65 49.96 38.11 30.04 38.11 40 73.65"/><circle class="cls-2" cx="40" cy="28.88" r="20.88"/><circle class="cls-3" cx="40" cy="28.88" r="12.21"/></g></g></svg>'),
+                iconSize: [100, 100], // size of the icon
+                shadowSize: [50, 64], // size of the shadow
+                iconAnchor: [50, 75], // point of the icon which will correspond to marker's location
+                shadowAnchor: [4, 62], // the same for the shadow
+                popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+            },
+            popup: "<h1>Krautbergkreuz</h1><img src='images/testbild.jpg' width='200'/>",
+            popupOptions: "",
+        }];
+
 
         //  Map Initialisierung mit Options
         //  ------------------------------------------------------------------------------------
@@ -256,67 +221,24 @@
 
 
 
-        // Variante geojson -> kleine Marker unten mit Titel
+        // Special locations
         // -------------------------------------------------------------
 
-        //Labels
-        function standorteOnEachFeature(feature, standorte) {
-            standorte.bindTooltip(feature.properties.Station.toString(), CS.geoJSONTooltipOptions);
-            tooltip = standorte.getTooltip();
+        var specialLocationsLayer = L.layerGroup();
+        specialLocations.forEach(element => {
+            console.log(element);
 
-            standorte.on('click', function(event) {
-                if (feature.properties.stateId) {
-                    console.log(feature.properties.stateId);
-                    var message = {
-                        'action': 'state-change',
-                        'state': feature.properties.stateId
-                    };
-
-                    window.parent.postMessage(message, "*");
-                }
-            });
-
-        }
-
-        //standorte
-        standorte = L.geoJson(
-            standorte, {
-                // function to 
-                pointToLayer: function(feature, latlng) {
-                    return L.circleMarker(latlng, CS.geoJSONStyles);
-                },
-                onEachFeature: standorteOnEachFeature
-            },
-
-        ).addTo(map);
-
-
-
-
-
-
-
-        //  Standorte-Layer: Große Marker mit custom Icon und Popup 
-        //  ------------------------------------------------------------------------------------
-
-        var customIcon = L.icon(CS.locationMarkerOptions);
-
-        var markerLayer = L.layerGroup();
-
-        CS.locations.forEach(function(location) {
-            var customMarker = L.marker(location, {
+            var customIcon = L.icon(element.markerOptions);
+            var customMarker = L.marker(element.location, {
                 icon: customIcon
             });
 
-            customMarker.bindTooltip(
-                CS.locationMarkerTooltip, CS.locationMarkerTooltipOptions).openTooltip();
-            customMarker.bindPopup(CS.locationMarkerPopup, CS.locationMarkerPopupOptions);
-            markerLayer.addLayer(customMarker);
-        });
+            //customMarker.bindTooltip(CS.locationMarkerTooltip, CS.locationMarkerTooltipOptions).openTooltip();
+            customMarker.bindPopup(element.popup, element.popupOptions);
+            specialLocationsLayer.addLayer(customMarker);
+        })
 
-        // add multiple markers to map
-        markerLayer.addTo(map);
-
+        specialLocationsLayer.addTo(map);
 
 
         // Bild-Layer: Image Overlay
@@ -369,8 +291,7 @@
 
         var overlayMaps = {
             [CS.geoJSON2Name]: weg,
-            [CS.locationsName]: markerLayer,
-            [CS.geojSONName]: standorte,
+            "Special Locations": specialLocationsLayer,
             [CS.geoJSON3Name]: geoJsonLayer
         };
 
